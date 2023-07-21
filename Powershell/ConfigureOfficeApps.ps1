@@ -6,7 +6,9 @@
 #         Configure Office applications     #
 #############################################
 
-
+#$Applications = "Word,Powerpoint,Access,Excel,OneNote,Outlook,Publisher"
+#$Version = "64"
+#$Type = "Add"
 
 [CmdletBinding()] Param (
     [Parameter(
@@ -213,7 +215,7 @@ function installOfficeUsingODT($Applications, $Version, $Type) {
 
         $ODTDownloadLinkRegex = '/officedeploymenttool[a-z0-9_-]*\.exe$'
         $guid = [guid]::NewGuid().Guid
-        $tempFolder = (Join-Path -Path "C:\temp\" -ChildPath $guid)
+        $tempFolder = (Join-Path -Path "C:\tempOffice\" -ChildPath $guid)
         $ODTDownloadUrl = 'https://www.microsoft.com/en-us/download/confirmation.aspx?id=49117'
 
         if (!(Test-Path -Path $tempFolder)) {
@@ -277,7 +279,7 @@ function installOfficeUsingODT($Applications, $Version, $Type) {
             }
 
             Write-Host "AVD AIB Customization Office Apps : Running setup.exe to Install Office"
-            $InstallOffice = Start-Process -FilePath $setupExePath -ArgumentList "/configure $(Split-Path -Path $xmlFilePath -Leaf)" -PassThru -Wait -WorkingDirectory $tempFolder -WindowStyle Hidden
+            #$InstallOffice = Start-Process -FilePath $setupExePath -ArgumentList "/configure $(Split-Path -Path $xmlFilePath -Leaf)" -PassThru -Wait -WorkingDirectory $tempFolder -WindowStyle Hidden
 
             if (!$InstallOffice) {
                 Throw "AVD AIB Customization Office Apps : Failed to run `"$setupExePath`" to install Office"
@@ -289,7 +291,7 @@ function installOfficeUsingODT($Applications, $Version, $Type) {
             
         }
         catch {
-            $PSCmdlet.ThrowTerminatingError($PSitem)
+       #     $PSCmdlet.ThrowTerminatingError($PSitem)
         }
     }
 
