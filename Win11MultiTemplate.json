@@ -80,6 +80,7 @@
                         "restartCheckCommand": "write-host 'restarting post Optimizations'",
                         "restartTimeout": "5m"
                     },
+                    
                     {
                         "type": "PowerShell",
                         "name": "Install Teams",
