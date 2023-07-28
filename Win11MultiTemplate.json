@@ -16,7 +16,6 @@
     "variables": {
     },
 
-
     "resources": [
       {
         "name": "[parameters('imageTemplateName')]",
@@ -62,12 +61,23 @@
                         "Expand-Archive 'c:\\temp\\azcopy.zip' 'c:\\temp'",
                         "copy-item 'C:\\temp\\azcopy_windows_amd64_*\\azcopy.exe\\' -Destination 'c:\\temp'"
                     ],
+
                         "type": "PowerShell",
                         "name": "Remove Mail and Calendar App",
                         "inline": [
                         "Get-AppxPackage *windowscommunicationsapps* | Remove-AppxPackage"
                     ]
                     },
+
+                    {
+                        "type": "PowerShell",
+                        "name": "GetArchive",
+                        "inline": [
+                          "c:\\temp\\azcopy.exe copy '<Shared Access Signature to archive file>' c:\\temp\\software.zip",
+                          "Expand-Archive 'c:\\temp\\software.zip' c:\\temp"
+                        ]
+                    },
+
                     {
                         "type": "PowerShell",
                         "name": "OptimizeOS",
@@ -75,18 +85,21 @@
                         "runAsSystem": true,
                         "scriptUri": "https://raw.githubusercontent.com/danielsollondon/azvmimagebuilder/master/solutions/14_Building_Images_WVD/1_Optimize_OS_for_WVD.ps1"
                     },
+
                     {
                         "type": "WindowsRestart",
                         "restartCheckCommand": "write-host 'restarting post Optimizations'",
                         "restartTimeout": "5m"
                     },
+
                     {
                         "type": "PowerShell",
                         "name": "Install Office365",
                         "runElevated": true,
                         "runAsSystem": true,
                         "scriptUri": "https://raw.githubusercontent.com/Jeroen-scripts/AVD/main/Powershell/Install-Office.ps1"
-                    },                    
+                    },      
+
                     {
                         "type": "PowerShell",
                         "name": "Install Teams",
@@ -94,11 +107,13 @@
                         "runAsSystem": true,
                         "scriptUri": "https://raw.githubusercontent.com/danielsollondon/azvmimagebuilder/master/solutions/14_Building_Images_WVD/2_installTeams.ps1"
                     },
+
                     {
                         "type": "WindowsRestart",
-                        "restartCheckCommand": "write-host 'restarting post Teams Install'",
+                        "restartCheckCommand": "write-host 'restarting post Office365 and Teams Install'",
                         "restartTimeout": "5m"
-                    },                        
+                    },     
+
                     {
                         "type": "WindowsUpdate",
                         "searchCriteria": "IsInstalled=0",
