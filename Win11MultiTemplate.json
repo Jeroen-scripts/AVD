@@ -31,7 +31,7 @@
             "identity": {
                 "type": "UserAssigned",
                         "userAssignedIdentities": {
-                        "/subscriptions/2c8f1e9e-38c2-4c2d-97c0-2ed7a336bcb8/resourcegroups/avdImageDemoRg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/aibIdentity": {}
+                        "/subscriptions/2c8f1e9e-38c2-4c2d-97c0-2ed7a336bcb8/resourcegroups/rg-azureimagebuilder/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uai-azureimagebuilder": {}
                             
                     }
                     },
@@ -48,8 +48,8 @@
             "source": {
                 "type": "PlatformImage",
                     "publisher": "MicrosoftWindowsDesktop",
-                    "offer": "windows-10",
-                    "sku": "win10-22h2-avd-g2",
+                    "offer": "windows-11",
+                    "sku": "win11-22h2-avd",
                     "version": "latest"
             },
             "customize": [
@@ -80,7 +80,13 @@
                         "restartCheckCommand": "write-host 'restarting post Optimizations'",
                         "restartTimeout": "5m"
                     },
-                    
+                    {
+                        "type": "PowerShell",
+                        "name": "Install Office365",
+                        "runElevated": true,
+                        "runAsSystem": true,
+                        "scriptUri": "https://raw.githubusercontent.com/Jeroen-scripts/AVD/main/Powershell/Install-Office.ps1"
+                    },                    
                     {
                         "type": "PowerShell",
                         "name": "Install Teams",
@@ -92,8 +98,7 @@
                         "type": "WindowsRestart",
                         "restartCheckCommand": "write-host 'restarting post Teams Install'",
                         "restartTimeout": "5m"
-                    },
-                        
+                    },                        
                     {
                         "type": "WindowsUpdate",
                         "searchCriteria": "IsInstalled=0",
@@ -103,13 +108,12 @@
                                     ],
                         "updateLimit": 40
                     }
-
             ],
             "distribute": 
             [
                 {   
                     "type": "SharedImage",
-                    "galleryImageId": "/subscriptions/2c8f1e9e-38c2-4c2d-97c0-2ed7a336bcb8/resourceGroups/avdImageDemoRg/providers/Microsoft.Compute/galleries/myaibsig01/images/win11avd",
+                    "galleryImageId": "/subscriptions/2c8f1e9e-38c2-4c2d-97c0-2ed7a336bcb8/resourceGroups/rg-azureimagebuilder/providers/Microsoft.Compute/galleries/AzureImageBuilderImages/images/Win11MultiUserVMS",
                     "runOutputName": "sigOutput",
                     "artifactTags": {
                         "source": "wvd11",
