@@ -73,7 +73,7 @@
                         "type": "PowerShell",
                         "name": "GetArchive",
                         "inline": [
-                          "c:\\temp\\azcopy.exe copy '<Shared Access Signature to archive file>' c:\\temp\\software.zip",
+                          "c:\\temp\\azcopy.exe copy 'https://aibsoftwarerepository.blob.core.windows.net/softwaresource/RDM.zip?sp=r&st=2023-07-28T14:34:40Z&se=2023-08-04T22:34:40Z&spr=https&sv=2022-11-02&sr=b&sig=2YYSW5HY2JIGhHZAo2mu0k%2FFpfBR5E9%2FrQR34D0XFxk%3D' c:\\temp\\software.zip",
                           "Expand-Archive 'c:\\temp\\software.zip' c:\\temp"
                         ]
                     },
@@ -106,6 +106,12 @@
                         "runElevated": true,
                         "runAsSystem": true,
                         "scriptUri": "https://raw.githubusercontent.com/danielsollondon/azvmimagebuilder/master/solutions/14_Building_Images_WVD/2_installTeams.ps1"
+                    },
+
+                    {   "type": "PowerShell",
+                        "name": "Install Custom Software",
+                        "runElevated": true,
+                        "scriptUri": "https://raw.githubusercontent.com/Jeroen-scripts/AVD/main/Powershell/install-apps.ps1"
                     },
 
                     {
