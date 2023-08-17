@@ -12,6 +12,11 @@ function Write-Log {
 }
 #endregion
 
+#download software repo
+c:\\temp\\azcopy.exe copy 'https://aibsoftwarerepository.blob.core.windows.net/softwaresource/software.zip?sp=r&st=2023-08-16T14:22:43Z&se=2023-08-30T22:22:43Z&spr=https&sv=2022-11-02&sr=b&sig=aB8m1nc%2Bzz1sPGk%2FKOHZ8DMkcGPcykWIs6%2B6ph5q8mw%3D' c:\\temp\\software.zip
+Expand-Archive 'c:\\temp\\software.zip' c:\\temp
+#endregion
+
 #region Remote Desktop Manager
 try {
     Start-Process -filepath msiexec.exe -Wait -ErrorAction Stop -ArgumentList '/i', 'c:\temp\software\RDM\Setup.RemoteDesktopManager.2021.1.44.0.msi', 'TRANSFORMS="C:\temp\RDM\RDMSettings.mst"', '/quiet'
