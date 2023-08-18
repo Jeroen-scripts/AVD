@@ -149,3 +149,19 @@ try {
 catch {
     $PSCmdlet.ThrowTerminatingError($PSitem)
 }
+
+#region cleanup
+try {
+    Remove-Item -Path "C:\tempOffice" -Recurse -Force
+    if (Test-Path "C:\tempOffice") {
+        Write-Log "Temporary office source folder removed"
+    }
+    else {
+        write-log "Error removing temporary office source folder"
+    }
+}
+catch {
+    $ErrorMessage = $_.Exception.message
+    write-log "Error removing temporary office source folder: $ErrorMessage"
+}
+#endregion
