@@ -22,6 +22,12 @@ try {
     Start-Process -filepath msiexec.exe -Wait -ErrorAction Stop -ArgumentList '/i', 'c:\temp\software\RDM\Setup.RemoteDesktopManager.2021.1.44.0.msi', 'TRANSFORMS="C:\temp\software\RDM\RDMSettings.mst"', '/quiet'
     if (Test-Path "C:\Program Files (x86)\Devolutions\Remote Desktop Manager\RemoteDesktopManager64.exe") {
         Write-Log "Remote Desktop Manager has been installed"
+        $TargetFile   = "C:\Program Files (x86)\Devolutions\Remote Desktop Manager\RemoteDesktopManager64.exe"
+        $ShortcutFile = "C:\Users\Public\Desktop\rdm.lnk"
+        $WScriptShell = New-Object -ComObject WScript.Shell
+        $Shortcut     = $WScriptShell.CreateShortcut($ShortcutFile)
+        $Shortcut.TargetPath = $TargetFile
+        $Shortcut.Save()
     }
     else {
         write-log "Error locating the Remote Desktop Manager executable"
@@ -37,7 +43,13 @@ catch {
 try {
     Start-Process -filepath msiexec.exe -Wait -ErrorAction Stop -ArgumentList '/i', 'c:\temp\software\OT\OT_12_0_0_x64.msi', 'TRANSFORMS="C:\temp\software\OT\Omninet Omnitracker 12.0.0.10344 x64 EN R01.mst"', '/quiet'
     if (Test-Path "C:\Program Files\OMNITRACKER\OMNINET.OMNITRACKER.Client.exe") {
-        Write-Log "Omnitracker Client has been installed"
+        Write-Log "Omnitracker Client has been installed. Creating desktop shortcut"
+        $TargetFile   = "C:\Program Files\OMNITRACKER\OMNINET.OMNITRACKER.Client.exe"
+        $ShortcutFile = "C:\Users\Public\Desktop\omnitracker.lnk"
+        $WScriptShell = New-Object -ComObject WScript.Shell
+        $Shortcut     = $WScriptShell.CreateShortcut($ShortcutFile)
+        $Shortcut.TargetPath = $TargetFile
+        $Shortcut.Save()
     }
     else {
         write-log "Error locating the Omnitracker Client executable"
