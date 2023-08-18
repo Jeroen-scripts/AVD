@@ -5,7 +5,7 @@
 # Omnitracker Client 
 
 #region Set logging 
-$logFile = "c:\temp\" + (get-date -format 'yyyyMMdd') + '_softwareinstall.log'
+$logFile = "c:\installlogs\" + (get-date -format 'yyyyMMdd') + '_softwareinstall.log'
 function Write-Log {
     Param($message)
     Write-Output "$(get-date -format 'yyyyMMdd HH:mm:ss') $message" | Out-File -Encoding utf8 $logFile -Append
@@ -51,29 +51,16 @@ catch {
 
 #region cleanup
 try {
-    Remove-Item -Path "C:\temp\software" -Recurse -Force
-    if (Test-Path "C:\temp\software") {
-        Write-Log "Software source folder failed to be removed"
+    Remove-Item -Path "C:\temp" -Recurse -Force
+    if (Test-Path "C:\temp") {
+        Write-Log "Temporary folder removed"
     }
     else {
-        write-log "Error removing software source folder"
+        write-log "Error removing temporary folder"
     }
 }
 catch {
     $ErrorMessage = $_.Exception.message
-    write-log "Error removing software source folder: $ErrorMessage"
+    write-log "Error removing temporary source folder: $ErrorMessage"
 }
-
-try {
-    Remove-Item -Path "C:\temp\software.zip" -Force
-    if (Test-Path "C:\temp\software.zip") {
-        Write-Log "Software zip file failed to be removed"
-    }
-    else {
-        write-log "Error removing software zip file"
-    }
-}
-catch {
-    $ErrorMessage = $_.Exception.message
-    write-log "Error removing software zip file: $ErrorMessage"
-}
+#endregion
