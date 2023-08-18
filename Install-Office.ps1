@@ -6,7 +6,7 @@
 ######################
 
 
-$logFile = "c:\installlogs\" + (get-date -format 'yyyyMMdd') + 'officeinstall.log'
+$logFile = "c:\installlogs\" + (get-date -format 'yyyyMMdd') + '_officeinstall.log'
 function Write-Log {
     Param($message)
     Write-Output "$(get-date -format 'yyyyMMdd HH:mm:ss') $message" | Out-File -Encoding utf8 $logFile -Append
