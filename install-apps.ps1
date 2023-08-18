@@ -61,6 +61,6 @@ try {
 }
 catch {
     $ErrorMessage = $_.Exception.message
-    write-log "Error removing temporary source folder: $ErrorMessage"
+    write-log "Error removing temporary folder: $ErrorMessage"
 }
 #endregion
