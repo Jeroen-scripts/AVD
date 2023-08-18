@@ -52,7 +52,7 @@ catch {
 #region cleanup
 try {
     Remove-Item -Path "C:\temp" -Recurse -Force
-    if (Test-Path "C:\temp") {
+    if (!(Test-Path "C:\temp")) {
         Write-Log "Temporary folder removed"
     }
     else {
