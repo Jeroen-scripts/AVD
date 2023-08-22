@@ -5,7 +5,7 @@
 # Omnitracker Client 
 
 #region Set logging 
-$logFile = "c:\temp\" + (get-date -format 'yyyyMMdd') + '_softwareinstall.log'
+$logFile = "c:\installlogs\" + (get-date -format 'yyyyMMdd') + '_softwareinstall.log'
 function Write-Log {
     Param($message)
     Write-Output "$(get-date -format 'yyyyMMdd HH:mm:ss') $message" | Out-File -Encoding utf8 $logFile -Append
