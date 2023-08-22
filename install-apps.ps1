@@ -4,12 +4,43 @@
 # Devolutions Remote Desktop Manager
 # Omnitracker Client
 # 7-zip file manager
+# Adobe Acrobat Reader DC
 
 #region Set logging 
 $logFile = "c:\installlogs\" + (get-date -format 'yyyyMMdd') + '_softwareinstall.log'
 function Write-Log {
     Param($message)
     Write-Output "$(get-date -format 'yyyyMMdd HH:mm:ss') $message" | Out-File -Encoding utf8 $logFile -Append
+}
+#endregion
+
+#region Adobe Reader
+try {
+    $installer = Get-ChildItem -Path "c:\temp\software\ADOBE"
+    Start-Process -filepath "c:\temp\software\ADOBE\$($installer)" -Wait -ErrorAction Stop -ArgumentList '/sAll', '/rs', '/msi', 'EULA_ACCEPT=YES'
+    if (Test-Path "C:\Program Files (x86)\Adobe\Acrobat Reader DC\Reader\AcroRd32.exe") {
+
+        #Stop autoupdate
+        Stop-Process -processname armsvc -Force
+        Set-Service "AdobeARMservice" -startuptype Disabled
+        Disable-ScheduledTask "Adobe Acrobat Update Task"
+
+        Write-Log "Adobe Reader has been installed"
+        <#
+        $TargetFile   = "C:\Program Files (x86)\Adobe\Acrobat Reader DC\Reader\AcroRd32.exe"
+        $ShortcutFile = "C:\Users\Public\Desktop\Arcobat Reader.lnk"
+        $WScriptShell = New-Object -ComObject WScript.Shell
+        $Shortcut     = $WScriptShell.CreateShortcut($ShortcutFile)
+        $Shortcut.TargetPath = $TargetFile
+        $Shortcut.Save()
+        #>
+    }
+    else {
+        write-log "Error locating the Adobe Reader executable"
+    }
+}
+catch {
+    write-log "Error installing Adobe Reader"
 }
 #endregion
 
