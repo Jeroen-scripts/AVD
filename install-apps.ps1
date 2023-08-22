@@ -2,7 +2,8 @@
 #
 # Applications to install:
 # Devolutions Remote Desktop Manager
-# Omnitracker Client 
+# Omnitracker Client
+# 7-zip file manager
 
 #region Set logging 
 $logFile = "c:\installlogs\" + (get-date -format 'yyyyMMdd') + '_softwareinstall.log'
@@ -53,6 +54,35 @@ try {
 catch {
     $ErrorMessage = $_.Exception.message
     write-log "Error installing Omnitracker Client: $ErrorMessage"
+}
+#endregion
+
+#region 7zip
+$tempFolder = ("C:\temp\")
+$Domain = "https://www.7-zip.org/download.html"
+$temp   = (Invoke-WebRequest -uri $Domain)
+$table  = $temp.ParsedHtml.getElementsByTagName('table')[0]
+$ver    = $table.cells[1].getElementsByTagName('p')[0].innertext.split()[2,3]
+$latest = $ver[0].replace(".","")
+Invoke-WebRequest -Uri "https://www.7-zip.org/a/7z$latest-x64.exe" -OutFile "$tempFolder\7z$latest-x64.exe"
+
+try {
+    Start-Process -filepath "$tempFolder\7z$latest-x64.exe" -Wait -ErrorAction Stop -ArgumentList '/S', '/D="C:\Program Files\7-Zip"'
+    if (Test-Path "C:\Program Files\7-Zip\7zFM.exe") {
+        Write-Log "7-zip has been installed"
+        $TargetFile   = "C:\Program Files\7-Zip\7zFM.exe"
+        $ShortcutFile = "C:\Users\Public\Desktop\7-Zip File Manager.lnk"
+        $WScriptShell = New-Object -ComObject WScript.Shell
+        $Shortcut     = $WScriptShell.CreateShortcut($ShortcutFile)
+        $Shortcut.TargetPath = $TargetFile
+        $Shortcut.Save()
+    }
+    else {
+        write-log "Error locating the 7-zip executable"
+    }
+}
+catch {
+    write-log "Error installing latest version of 7-zip"
 }
 #endregion
 
