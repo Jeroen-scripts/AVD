@@ -34,9 +34,9 @@ catch {
 }
 #endregion
 
-#region Remote Desktop Manager
+#region Omnitracker
 try {
-    Start-Process -filepath msiexec.exe -Wait -ErrorAction Stop -ArgumentList '/i', 'c:\temp\software\OT\OT_12_0_0_x64.msi', 'TRANSFORMS="C:\temp\software\OT\Omninet Omnitracker 12.0.0.10344 x64 EN R01.mst"', '/quiet'
+    Start-Process -filepath msiexec.exe -Wait -ErrorAction Stop -ArgumentList '/i', 'c:\temp\software\OT\OT.msi', 'TRANSFORMS="C:\temp\software\OT\OT.mst"', '/quiet'
     if (Test-Path "C:\Program Files\OMNITRACKER\OMNINET.OMNITRACKER.Client.exe") {
         Write-Log "Omnitracker Client has been installed. Creating desktop shortcut"
         $TargetFile   = "C:\Program Files\OMNITRACKER\OMNINET.OMNITRACKER.Client.exe"
