@@ -58,7 +58,7 @@ catch {
 
 #region cleanup
 try {
-    Remove-Item -Path "C:\temp\software" -Recurse -Force
+    Remove-Item -Path "C:\temp\*" -Recurse -Force
     if (Test-Path "C:\temp\software") {
         Write-Log "Software source folder failed to be removed"
     }
@@ -70,17 +70,4 @@ catch {
     $ErrorMessage = $_.Exception.message
     write-log "Error removing software source folder: $ErrorMessage"
 }
-
-try {
-    Remove-Item -Path "C:\temp\software.zip" -Force
-    if (Test-Path "C:\temp\software.zip") {
-        Write-Log "Software zip file failed to be removed"
-    }
-    else {
-        write-log "Error removing software zip file"
-    }
-}
-catch {
-    $ErrorMessage = $_.Exception.message
-    write-log "Error removing software zip file: $ErrorMessage"
-}
+#endregion
