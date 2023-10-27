@@ -25,15 +25,12 @@ try {
         $Shortcut.Save()
     }
     else {
-        $ErrorMessage = $_.Exception.message
-        write-log "An error occured: $_"
-        write-log "Error locating the Remote Desktop Manager executable: $ErrorMessage"
+        write-log "Error locating the Remote Desktop Manager executable"
     }
 }
 catch {
     $ErrorMessage = $_.Exception.message
-    write-log "An error occured: $_"
-    write-log "Error installing Remote Desktop Manager: $ErrorMessage"
+    write-log "Error occured installing Remote Desktop Manager: $ErrorMessage"
 }
 #endregion
 
@@ -51,18 +48,16 @@ try {
     }
     else {
         $ErrorMessage = $_.Exception.message
-        write-log "An error occured: $_"
-        write-log "Error locating the Omnitracker Client executable: $ErrorMessage"
+        write-log "Error locating the Omnitracker Client executable"
     }
 }
 catch {
     $ErrorMessage = $_.Exception.message
-    write-log "An error occured: $_"
-    write-log "Error installing Omnitracker Client: $ErrorMessage"
+    write-log "Error occured installing Omnitracker Client: $ErrorMessage"
 }
 #endregion
 
-<#region cleanup
+#region cleanup
 try {
     Remove-Item -Path "C:\temp\*" -Recurse -Force
     if (!(Test-Path "C:\temp\software")) {
@@ -77,4 +72,3 @@ catch {
     write-log "Error removing software source folder: $ErrorMessage"
 }
 #endregion
-#>
