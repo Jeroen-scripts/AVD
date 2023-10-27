@@ -16,7 +16,7 @@ function Write-Log {
 try {
     Start-Process -filepath msiexec.exe -Wait -ErrorAction Stop -ArgumentList '/i', 'c:\temp\software\RDM\Setup.RemoteDesktopManager.2021.1.44.0.msi', 'TRANSFORMS="C:\temp\software\RDM\RDMSettings.mst"', '/quiet'
     if (Test-Path "C:\Program Files (x86)\Devolutions\Remote Desktop Manager\RemoteDesktopManager64.exe") {
-        Write-Log "Remote Desktop Manager has been installed"
+        Write-Log "Remote Desktop Manager has been installed. Creating desktop shortcut"
         $TargetFile   = "C:\Program Files (x86)\Devolutions\Remote Desktop Manager\RemoteDesktopManager64.exe"
         $ShortcutFile = "C:\Users\Public\Desktop\rdm.lnk"
         $WScriptShell = New-Object -ComObject WScript.Shell
@@ -25,11 +25,14 @@ try {
         $Shortcut.Save()
     }
     else {
-        write-log "Error locating the Remote Desktop Manager executable"
+        $ErrorMessage = $_.Exception.message
+        write-log "An error occured: $_"
+        write-log "Error locating the Remote Desktop Manager executable: $ErrorMessage"
     }
 }
 catch {
     $ErrorMessage = $_.Exception.message
+    write-log "An error occured: $_"
     write-log "Error installing Remote Desktop Manager: $ErrorMessage"
 }
 #endregion
@@ -47,11 +50,14 @@ try {
         $Shortcut.Save()
     }
     else {
-        write-log "Error locating the Omnitracker Client executable"
+        $ErrorMessage = $_.Exception.message
+        write-log "An error occured: $_"
+        write-log "Error locating the Omnitracker Client executable: $ErrorMessage"
     }
 }
 catch {
     $ErrorMessage = $_.Exception.message
+    write-log "An error occured: $_"
     write-log "Error installing Omnitracker Client: $ErrorMessage"
 }
 #endregion
@@ -59,7 +65,7 @@ catch {
 #region cleanup
 try {
     Remove-Item -Path "C:\temp\*" -Recurse -Force
-    if (Test-Path "C:\temp\software") {
+    if (!(Test-Path "C:\temp\software")) {
         Write-Log "Software source folder failed to be removed"
     }
     else {
