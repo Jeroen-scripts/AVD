@@ -62,7 +62,7 @@ catch {
 }
 #endregion
 
-#region cleanup
+<#region cleanup
 try {
     Remove-Item -Path "C:\temp\*" -Recurse -Force
     if (!(Test-Path "C:\temp\software")) {
@@ -77,3 +77,4 @@ catch {
     write-log "Error removing software source folder: $ErrorMessage"
 }
 #endregion
+#>
