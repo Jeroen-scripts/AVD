@@ -1,6 +1,7 @@
 # Software install Script
 #
 # Applications to install:
+# .NET 8 Desktop Runtime
 # Devolutions Remote Desktop Manager
 # Omnitracker Client 
 
@@ -12,12 +13,23 @@ function Write-Log {
 }
 #endregion
 
+#region .NET 8.0.6 Desktop Runtime (prereq RDM)
+try {
+    Start-Process -filepath C:\temp\Software\NET8DesktopRuntime\windowsdesktop-runtime-8.0.6-win-x64.exe -Wait -ErrorAction Stop -ArgumentList '/install /quiet /norestart /log "c:\installlogs\DotNet80x64-Install.log"'
+    Write-Log "Installing .NET 8 Desktop Runtime"
+}
+catch {
+    $ErrorMessage = $_.Exception.message
+    write-log "Error occured installing .NET desktop runtime: $ErrorMessage"
+}
+#endregion
+
 #region Remote Desktop Manager
 try {
-    Start-Process -filepath msiexec.exe -Wait -ErrorAction Stop -ArgumentList '/i', 'c:\temp\software\RDM\Setup.RemoteDesktopManager.2021.1.44.0.msi', 'TRANSFORMS="C:\temp\software\RDM\RDMSettings.mst"', '/quiet'
-    if (Test-Path "C:\Program Files (x86)\Devolutions\Remote Desktop Manager\RemoteDesktopManager64.exe") {
+    Start-Process -filepath msiexec.exe -Wait -ErrorAction Stop -ArgumentList '/i', 'c:\temp\software\RDM\rdms24prd.RemoteDesktopManager.2024.1.21.0.msi', '/quiet'
+    if (Test-Path "C:\Program Files\Devolutions\Remote Desktop Manager\RemoteDesktopManager.exe") {
         Write-Log "Remote Desktop Manager has been installed. Creating desktop shortcut"
-        $TargetFile   = "C:\Program Files (x86)\Devolutions\Remote Desktop Manager\RemoteDesktopManager64.exe"
+        $TargetFile   = "C:\Program Files\Devolutions\Remote Desktop Manager\RemoteDesktopManager.exe"
         $ShortcutFile = "C:\Users\Public\Desktop\rdm.lnk"
         $WScriptShell = New-Object -ComObject WScript.Shell
         $Shortcut     = $WScriptShell.CreateShortcut($ShortcutFile)
